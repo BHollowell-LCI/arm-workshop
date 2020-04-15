@@ -5,12 +5,12 @@
     "variables": {},
     "resources": [
         {
-            "name": "bhollowell-lci-stg",
+            "name": "lcibhollowellstg",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "tags": {
-                "displayName": "bhollowell-lci-stg"
+                "displayName": "lcibhollowellstg"
             },
             "properties": {
                 "accountType": "Standard_LRS"

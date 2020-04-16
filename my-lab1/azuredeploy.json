@@ -7,7 +7,7 @@
            "defaultValue": "",
            "maxLength": 11,
            "metadata": {
-                "description": "Name of Storage Account"
+                "description": "Prefix of Storage Account"
             }
         },
         "accountType": {

@@ -2,47 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "subscriptionId": {
-            "value": "5dcf7cf2-ba81-4b62-9c4c-a2dbeed733db"
-        },
-        "name": {
+        "webAppName": {
             "value": "bholl-armlab2"
-        },
-        "location": {
-            "value": "East US"
-        },
-        "hostingEnvironment": {
-            "value": ""
-        },
-        "hostingPlanName": {
-            "value": "bhollowell-armlab2-plan"
-        },
-        "serverFarmResourceGroup": {
-            "value": "Sandbox_BH01"
-        },
-        "alwaysOn": {
-            "value": false
-        },
-        "sku": {
-            "value": "Free"
-        },
-        "skuCode": {
-            "value": "F1"
-        },
-        "workerSize": {
-            "value": "0"
-        },
-        "workerSizeId": {
-            "value": "0"
-        },
-        "numberOfWorkers": {
-            "value": "1"
-        },
-        "currentStack": {
-            "value": "dotnetcore"
-        },
-        "errorLink": {
-            "value": "https://bholl-armlab2.scm.azurewebsites.net/detectors?type=tools&name=eventviewer"
         }
     }
 }

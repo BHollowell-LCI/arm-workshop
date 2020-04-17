@@ -105,7 +105,8 @@
                     }
                 ]
             }
-        }
+        },
+        "vmId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
     },
     "resources": [
         {
@@ -256,6 +257,10 @@
         "sshCommand": {
             "type": "string",
             "value": "[concat('ssh ', parameters('adminUsername'), '@', reference(variables('publicIPAddressName')).dnsSettings.fqdn)]"
+        },
+        "vmRef": {
+            "type": "object",
+            "value": "[reference(variables('vmId'))]"
         }
     }
 }

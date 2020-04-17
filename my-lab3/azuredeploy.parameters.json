@@ -3,13 +3,18 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "GEN-UNIQUE"
+            "value": "bhollowell"
         },
         "adminPasswordOrKey": {
-            "value": "GEN-PASSWORD"
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/5dcf7cf2-ba81-4b62-9c4c-a2dbeed733db/resourceGroups/Sandbox_BH01/providers/Microsoft.KeyVault/vaults/bholl-keyvault1"
+                },
+                "secretName": "ubuntuDefaultPassword"
+            }
         },
         "dnsLabelPrefix": {
-            "value": "GEN-UNIQUE"
+            "value": "bholl-lab3-vm"
         }
     }
 }

@@ -13,8 +13,11 @@
                 "secretName": "ubuntuDefaultPassword"
             }
         },
-        "dnsLabelPrefix": {
-            "value": "bholl-lab3-vm"
+        "vnetName": {
+            "value": "ubuntuVnet"
+        },
+        "subnetName": {
+            "value": "ubuntuSubnet"
         }
     }
 }

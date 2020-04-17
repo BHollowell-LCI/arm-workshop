@@ -4,7 +4,6 @@
     "parameters": {
         "vmName": {
             "type": "string",
-            "defaultValue": "simpleLinuxVM",
             "metadata": {
                 "description": "The name of you Virtual Machine."
             }
@@ -59,14 +58,7 @@
                 "description": "Location for all resources."
             }
         },
-        "VmSize": {
-            "type": "string",
-            "defaultValue": "Standard_B2s",
-            "metadata": {
-                "description": "The size of the VM"
-            }
-        },
-        "virtualNetworkName": {
+        "vnetName": {
             "type": "string",
             "defaultValue": "vNet",
             "metadata": {
@@ -80,6 +72,18 @@
                 "description": "Name of the subnet in the virtual network"
             }
         },
+        "vnetPrefix": {
+           "type": "string",
+           "metadata": {
+                "description": "Address Space for vNet"
+            }
+        },
+        "subnetPrefix": {
+           "type": "string",
+           "metadata": {
+                "description": "IP space for Subnet"
+            }
+        },
         "networkSecurityGroupName": {
             "type": "string",
             "defaultValue": "SecGroupNet",
@@ -89,12 +93,12 @@
         }
     },
     "variables": {
-        "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
-        "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
-        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
+        "publicIpAddressName": "[concat(parameters('vmName'), '-pip' )]",
+        "pipType": "Dynamic",
+        "networkInterfaceName": "[concat(parameters('vmName'),'-nic')]",
+        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+        "vmSize": "Standard_B1s",
         "osDiskType": "Standard_LRS",
-        "subnetAddressPrefix": "10.1.0.0/24",
-        "addressPrefix": "10.1.0.0/16",
         "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
@@ -116,7 +120,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
             ],
             "properties": {
@@ -127,7 +131,7 @@
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             },
-                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAllocationMethod": "[variables('pipType')]",
                             "publicIpAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
                             }
@@ -165,19 +169,19 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2019-04-01",
-            "name": "[parameters('virtualNetworkName')]",
+            "name": "[parameters('vnetName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[variables('addressPrefix')]"
+                        "[parameters('vnetPrefix')]"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "[parameters('subnetName')]",
                         "properties": {
-                            "addressPrefix": "[variables('subnetAddressPrefix')]",
+                            "addressPrefix": "[parameters('subnetPrefix')]",
                             "privateEndpointNetworkPolicies": "Enabled",
                             "privateLinkServiceNetworkPolicies": "Enabled"
                         }
@@ -213,7 +217,7 @@
             ],
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "[parameters('VmSize')]"
+                    "vmSize": "[variables('VmSize')]"
                 },
                 "storageProfile": {
                     "osDisk": {

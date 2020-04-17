@@ -8,7 +8,7 @@
       "adminPassword": {
         "reference": {
           "keyVault": {
-            "id": "/subscriptions/2d31be49-d959-4415-bb65-8aec2c90ba62/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
+            "id": "/subscriptions/5dcf7cf2-ba81-4b62-9c4c-a2dbeed733db/resourceGroups/Sandbox_BH01/providers/Microsoft.KeyVault/vaults/bholl-keyvault1"
           },
           "secretName": "ubuntuDefaultPassword"
         }

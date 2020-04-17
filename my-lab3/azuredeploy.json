@@ -259,8 +259,8 @@
             "value": "[concat('ssh ', parameters('adminUsername'), '@', reference(variables('publicIPAddressName')).dnsSettings.fqdn)]"
         },
         "vmRef": {
-            "type": "object",
-            "value": "[reference(variables('vmId'))]"
+            "type": "string",
+            "value": "[reference(variables('vmId')).storageProfile.osDisk.managedDisk.id]"
         }
     }
 }

@@ -18,11 +18,11 @@
             "type": "string",
             "metadata": {
                 "description": "Name for the virtual machine"
-            },
-            "defaultValue": "myUbuntuVm"
+            }
         },
         "dnsLabelPrefix": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
             }
@@ -69,6 +69,7 @@
         }
     },
     "variables": {
+        "pip?": "[not(empty(parameters('dnsLabelPrefix')))]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
         "subnetRef": "[concat(variables('vnetID'), '/subnets/', parameters('subnetName'))]",
         "nicName": "[concat(parameters('vmName'), '-nic')]",
@@ -79,7 +80,10 @@
         "imageOffer": "UbuntuServer",
         "storageAccountType": "Standard_LRS",
         "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
-        "vmId": "[resourceId('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        "vmId": "[resourceId('Microsoft.Compute/virtualMachines/', parameters('vmName'))]",
+        "pipObject": {
+            "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
+        }
     },
     "resources": [
         {
@@ -94,6 +98,7 @@
             "properties": {}
         },
         {
+            "condition": "[variables('pip?')]",
             "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[variables('pipName')]",
@@ -141,9 +146,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
-                            },
+                            "publicIPAddress": "[if(variables('pip?'), variables('pipObject'), json('null'))]",
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             }
@@ -204,18 +207,5 @@
             }
         }
     ],
-    "outputs": {
-        "hostname": {
-            "type": "string",
-            "value": "[reference(variables('pipName')).dnsSettings.fqdn]"
-        },
-        "sshCommand": {
-            "type": "string",
-            "value": "[concat('ssh ', parameters('adminUsername'), '@', reference(variables('pipName')).dnsSettings.fqdn)]"
-        },
-        "osDiskId": {
-            "type": "string",
-            "value": "[reference(variables('vmId')).storageProfile.osDisk.managedDisk.id]"
-        }
-    }
+    "outputs": {}
 }
